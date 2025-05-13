@@ -8,25 +8,20 @@
   <div id="file-info"></div>
 
   <script>
-    const url = 'https://56b61e3a-49f2-4f16-a96b-bd82d77db49d-00-314glpw6zynrn.sisko.replit.dev/api/fileinfo?url=https://r2.filedon.co/fun.mp4';
+  const url = 'https://r2.filedon.co/fun.mp4';
+  const api = `http://localhost:3000/api/fileinfo?url=${encodeURIComponent(url)}`;
 
-    async function getFileInfo(fileUrl) {
-      try {
-        const response = await fetch(fileUrl, { method: 'HEAD' });
-        const contentLength = response.headers.get('Content-Length');
-        const sizeMB = contentLength ? (parseInt(contentLength) / (1024 * 1024)).toFixed(2) + ' MB' : 'Tidak diketahui';
-        const filename = fileUrl.split('/').pop();
-
-        document.getElementById('file-info').innerHTML = `
-          ${filename}<strong> (${sizeMB})</strong>
-        `;
-      } catch (error) {
-        document.getElementById('file-info').innerText = 'Gagal memuat informasi file.';
-        console.error(error);
-      }
-    }
-
-    getFileInfo(url);
-  </script>
+  fetch(api)
+    .then(res => res.json())
+    .then(data => {
+      document.body.innerHTML = `
+        <p><strong>Nama File:</strong> ${data.filename}</p>
+        <p><strong>Ukuran:</strong> ${data.size}</p>
+      `;
+    })
+    .catch(err => {
+      document.body.innerText = 'Gagal ambil info file.';
+    });
+</script>
 </body>
 </html>
