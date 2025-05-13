@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Info File</title>
+</head>
+<body>
+  <h2>Informasi File</h2>
+  <div id="file-info"></div>
+
+  <script>
+    const url = 'https://r2.filedon.co/fun.mp4';
+
+    async function getFileInfo(fileUrl) {
+      try {
+        const response = await fetch(fileUrl, { method: 'HEAD' });
+        const contentLength = response.headers.get('Content-Length');
+        const sizeMB = contentLength ? (parseInt(contentLength) / (1024 * 1024)).toFixed(2) + ' MB' : 'Tidak diketahui';
+        const filename = fileUrl.split('/').pop();
+
+        document.getElementById('file-info').innerHTML = `
+          ${filename}<strong> (${sizeMB})</strong>
+        `;
+      } catch (error) {
+        document.getElementById('file-info').innerText = 'Gagal memuat informasi file.';
+        console.error(error);
+      }
+    }
+
+    getFileInfo(url);
+  </script>
+</body>
+</html>
