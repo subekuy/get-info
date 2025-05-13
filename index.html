@@ -14,7 +14,7 @@
   fetch(api)
     .then(res => res.json())
     .then(data => {
-      document.body.innerHTML = `
+      document.getElementById('file-info').innerHTML = `
         <p><strong>Nama File:</strong> ${data.filename}</p>
         <p><strong>Ukuran:</strong> ${data.size}</p>
       `;
